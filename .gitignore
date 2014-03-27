@@ -1,1 +1,6 @@
 auto/
+*.pdf
+*.aux
+*.toc
+*.gz
+*.log
