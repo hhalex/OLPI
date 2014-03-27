@@ -17,15 +17,16 @@ Nous étions à la préhistoire de l'informatique.
 
 Plusieurs solutions furent envisagées, des plus téméraires aux plus banales:
 \begin{itemize}
-\item CPOLD : pour mettre en commun une modification, nous gardions une copie du fichier d'origine, renommé en \texttt{.old} et nous copions le nouveau fichier sur un répertoire commun. 
+\item CPOLD : pour mettre en commun une modification, nous gardions une copie du fichier d'origine, renommé en \texttt{.old} et nous copions le nouveau fichier sur un répertoire commun ~\cite{CPOLD-article}. 
 \item La solution de la disquette : chaque modification pouvait être transmise par un nouveau fichier via une disquette, un e-mail ou autre.
 \item De nos jours encore, certaines personnes utilisent un service de synchronisation dans le cloud (du type Dropbox/SugarSync) pour synchroniser leurs fichiers et dossiers sur tous les ordinateurs. 
 \end{itemize}
 
 Ces façons de gérer les ressources présentaient de nombreux défauts. Nous pouvons noter en particulier : 
 \begin{enumerate}
-\item le manque de robustesse et la perte de données possibles en cas d'erreur lors de la copie
-\item la redondance de l'information. Une grande partie des modifications n'affecte pas l'ensemble du fichier. 
+\item le manque de robustesse et la perte de données possibles en cas d'erreur lors de la copie ;
+\item l'impossibilité de remonter aux anciennes versions des fichiers ;
+\item la redondance de l'information. Une grande partie des modifications n'affecte pas l'ensemble du fichier ;
 \item le manque d'automatisation. Les opérations étaient réalisées à la main -- ou au mieux à l'aide de scripts bash, MDR! 
 \end{enumerate}
 
@@ -36,8 +37,10 @@ Ceux-ci collaborent sur des projets dont la complexité s'accroît au cours du t
 La gestion de projets d'une telle envergure nécessite des outils adaptés. 
 Afin de répondre aux problématiques sus-citées, ils ont développé plusieurs solutions. 
 
-La première solution stable sortit dans le cadre du projet GNU, initié par Richard Stallman. Il s'agit de RCS (acronyme pour Revision Control System). 
-Celui-ci est une amélioration de SCCS (Source Code Control System). Il présente une interface plus simple d'utilisation, un stockage amélioré des versions de fichiers afin de les retrouver plus rapidement . 
+La première solution stable sortit dans le cadre du projet GNU, initié par Richard Stallman. Il s'agit de RCS (acronyme pour Revision Control System) ~\cite{GNUWebSite}. 
+Celui-ci est une amélioration de SCCS (Source Code Control System). Il présente une interface plus simple d'utilisation, un stockage amélioré des versions de fichiers afin de les retrouver plus rapidement. 
+
+\subsubsection{Généalogie}
 
 Puis ils se marièrent et eurent beaucoup d'enfants. L'arbre donné en figure \ref{fig:chronologie} retrace leur généalogie. 
 
@@ -49,6 +52,8 @@ Puis ils se marièrent et eurent beaucoup d'enfants. L'arbre donné en figure \r
   \label{fig:chronologie}
 \end{figure}
 
+RCS engendra CVS. CVS engendra SVN. SVN fut fécond et insuffla la vie à deux enfants, BitKeeper et GNU Arch. 
+A ce moment, deux ramifications se produisirent dans la descendance. 
 
 \subsection{Cahier des charges d'un gestionnaire de versions}
 
