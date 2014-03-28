@@ -1,23 +1,18 @@
 %%%% Ecriture du plan
 
-\section*{Introduction}
-
-\section{Etat de l'art}
-
-\subsection{Problématiques et historique}
-
-% idée : d'où ça sort ce concept de gestionnaire de versions ?
-% Quels problèmes ont été résolus par les gestionnaires de versions, comment/quels sont les différentes solutions? 
-
-\subsubsection{Mauvaises pratiques}
-
 Au commencement était l'information. Et l'information était à gérer, et l'information posa problème. Les développeurs de logiciels qui travaillaient en équipe devaient se soucier de mettre en commun leurs modifications. 
 Nous étions à la préhistoire de l'informatique.
 % (ère qui n'est peut-être pas révolue de nos jours, comme nous verrons par la suite)
 
+\section{Problématiques et historique}
+
+\subsection{Mauvaises pratiques}
+
+
+
 Plusieurs solutions furent envisagées, des plus téméraires aux plus banales:
 \begin{itemize}
-\item CPOLD : pour mettre en commun une modification, nous gardions une copie du fichier d'origine, renommé en \texttt{.old} et nous copions le nouveau fichier sur un répertoire commun ~\cite{CPOLD-article}. 
+\item CPOLD : pour mettre en commun une modification, nous gardions une copie du fichier d'origine, renommé en \texttt{.old} et nous copions le nouveau fichier sur un répertoire commun. Ceci est issu d'un article fake du net ~\cite{CPOLD-article}. 
 \item La solution de la disquette : chaque modification pouvait être transmise par un nouveau fichier via une disquette, un e-mail ou autre.
 \item De nos jours encore, certaines personnes utilisent un service de synchronisation dans le cloud (du type Dropbox/SugarSync) pour synchroniser leurs fichiers et dossiers sur tous les ordinateurs. 
 \end{itemize}
@@ -30,17 +25,14 @@ Ces façons de gérer les ressources présentaient de nombreux défauts. Nous po
 \item le manque d'automatisation. Les opérations étaient réalisées à la main -- ou au mieux à l'aide de scripts bash, MDR! 
 \end{enumerate}
 
-\subsubsection{L'invention du gestionnaire de versions}
+\subsection{L'invention du gestionnaire de versions}
 
 Nous sommes dans les années 80, l'essor du logiciel libre attire de plus en plus de développeurs. 
 Ceux-ci collaborent sur des projets dont la complexité s'accroît au cours du temps. 
 La gestion de projets d'une telle envergure nécessite des outils adaptés. 
 Afin de répondre aux problématiques sus-citées, ils ont développé plusieurs solutions. 
 
-La première solution stable sortit dans le cadre du projet GNU, initié par Richard Stallman. Il s'agit de RCS (acronyme pour Revision Control System) ~\cite{GNUWebSite}. 
-Celui-ci est une amélioration de SCCS (Source Code Control System). Il présente une interface plus simple d'utilisation, un stockage amélioré des versions de fichiers afin de les retrouver plus rapidement. 
-
-\subsubsection{Généalogie}
+\subsection{Généalogie}
 
 Puis ils se marièrent et eurent beaucoup d'enfants. L'arbre donné en figure \ref{fig:chronologie} retrace leur généalogie. 
 
@@ -53,32 +45,91 @@ Puis ils se marièrent et eurent beaucoup d'enfants. L'arbre donné en figure \r
 \end{figure}
 
 RCS engendra CVS. CVS engendra SVN. SVN fut fécond et insuffla la vie à deux enfants, BitKeeper et GNU Arch. 
-A ce moment, deux ramifications se produisirent dans la descendance. 
+Puis BitKeeper, qui était un projet propriétaire voulut devenir open source. De cette séparation naquirent Mercurial et GIT. 
 
-\subsection{Cahier des charges d'un gestionnaire de versions}
+Ce qui suit est tiré d'un article du net \cite{Article-hist-A}. 
+
+\subsubsection{RCS (Revision Control System)}
+
+La première solution stable sortit dans le cadre du projet GNU, initié par Richard Stallman. Il s'agit de RCS (acronyme pour Revision Control System) ~\cite{GNUWebSite}. 
+Celui-ci est une amélioration de SCCS (Source Code Control System). Il présente une interface plus simple d'utilisation, un stockage amélioré des versions de fichiers afin de les retrouver plus rapidement. 
+
+\subsubsection{CVS (Concurrent Versions System)}
+
+Le concept était important, mais encore inadapté dans le cadre d'un projet logiciel impliquant un arbre de fichiers et toute une équipe projet. C'est pourquoi, au début des années 1990 s'est développé le célèbre CVS, logiciel destiné à permettre à des équipes de développer des projets complets. Techniquement, CVS s'appuie sur son prédécesseur RCS, en lui ajoutant une couche de transmission de fichiers par le réseau, et une autre de gestion de plusieurs fichiers (toutefois indépendants les uns des autres). Voici ce que dit l'auteur original des premières lignes de CVS :
+
+\begin{quotation}
+I created CVS to be able to cooperate with my students, Erik Baalbergen and Maarten Waage, on the ACK (Amsterdam Compiler Kit) C compiler. The three of us had vastly different schedules (one student was a steady 9-5 worker, the other was irregular, and I could work on the project only in the evenings). Their project ran from July 1984 to August 1985. CVS was initially called cmt, for the obvious reason that it allowed us to commit versions independently. 
+ -– Dick Grune
+\end{quotation}
+
+\subsubsection{SVN (Subversion)}
+
+Le déploiement de CVS a grande échelle a révélé de nombreuses faiblesses dans son modèle :
+\begin{itemize}
+\item la base de données, simple dossier dans le système de fichiers, n'était pas atomique et présentait donc le risque d'être dans un état non-déterminé ;
+\item le modèle de gestion des collections de fichiers ne pousse pas à considérer l'ensemble du projet comme une seule et même œuvre, et permet donc de suivre indépendamment les modifications de chaque fichier. La conséquence courante est une incohérence dans les versions des fichiers du projet ;
+\item les opérations du système de fichiers ne sont pas versionnées (déplacement, suppression, etc.).
+\end{itemize}
+
+C'est précisément pour combler ces lacunes qu'est né en 2000 le projet Subversion. Le modèle reste proche de celui de CVS, mais solutionne ses graves limitations, en particulier grâce à :
+\begin{itemize}
+\item des commits (livraison de modifications) atomiques ;
+\item une notion de projet (composé d'une collection de fichiers) suivi dans sa globalité ;
+\item un suivi des opérations du système de fichiers sans perdre l'historique de chaque élément.
+\end{itemize}
+
+Aujourd'hui, Subversion est un système de gestion de sources très répandu, mature et intégré à de nombreux outils. En activant le module correspondant, AtikTeam inclut un dépôt Subversion dans le projet, permettant ainsi d'intégrer parfaitement gestion de sources et gestion de projet.
+
+\subsubsection{Git et Mercurial}
+Si le modèle de Subversion se prête bien aux projets de taille raisonnable, conduits par une équipe organisée dont les responsabilités sont pré-établies, il trouve rapidement ses limites dans le cas de grands projets open-source conduits par des milliers de contributeurs potentiels :
+\begin{itemize}
+\item le dépôt, central par conception, est fortement sollicité et il faut parfois faire la queue pour y envoyer son travail ;
+\item le dépôt central contraint les développeurs à disposer d'une connexion internet pour créer une nouvelle version (par un commit) ;
+\item les branches thématiques, groupées en un unique dépôt, deviennent rapidement trop nombreuses donc difficiles à gérer ;
+\item l'attribution des autorisations pour livrer (commit) est un travail compliqué pour des projets logiciels de plusieurs milliers de développeurs.
+\end{itemize}
+
+Face a ce constat sont apparus deux nouveaux outils, très proches par conception, proposant un nouveau modèle distribué (décentralisé) pour la collaboration : Git et Mercurial. Dans ce nouveau modèle, il n'y a plus de dépôt central dans lequel livrer, et chaque développeur devient responsable de son propre dépôt personnel. Dans ce dépôt, il peut :
+\begin{itemize}
+\item livrer son travail, sans que cela ne nécessite de connexion internet, ni d'autorisation particulière, par l'opération commit ;
+\item intégrer le travail de ses collaborateurs, par l'opération pull.
+\end{itemize}
+
+Rien de spectaculaire à première vue, pourtant le changement de modèle est radical. On passe d'un système organisé pour que les développeurs poussent leur travail dans un unique dépôt commun à un système sans unique dépôt de référence, sans possibilité de pousser, mais avec seulement la possibilité de tirer, c'est à dire de récupérer le travail d'un collaborateur en l'intégrant au sien. Autrement dit, l'initiative de l'intégration change de main, passant de celle de l'auteur à celle de l'utilisateur des modifications. Le déploiement le plus célèbre d'un tel modèle est certainement celui du noyau Linux. En consultant le journal du dépôt de Linus Torvald, on constate que son activité principale consiste à intégrer le travail de quelques proches collaborateurs, qui font de même avec leurs propres collaborateurs de confiance.
+
+\section{Cahier des charges d'un gestionnaire de versions}
 
 % idée : c'est quoi un gestionnaire de versions ?
 % et qu'est-ce qui les distingue?
 
 % On récapitule toutes les fonctionnalités clés : branches, commit, merge, stage, repo, centralisé, décentralisé, diff
 
-\subsection{Récapitulatif/Comparatif des gestionnaires de versions}
+%\subsection{Approche globale}
+
+% fonctions, décrites de façon haut niveau
+
+%\subsection{Approche fonctionnelle}
+
+Pour cette partie, nous nous référerons au polycopié donné dans la bibliographie \cite{Git-poly}. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.6]{images/technique_git.png}
+\caption{Fonctionnalités d'un gestionnaire de versions}
+\label{fonction}
+\end{figure}
+
+\section{Récapitulatif/Comparatif des gestionnaires de versions}
 
 % idée : quels sont les différents gestionnaires de versions ? Qu'est-ce qui les différencie ? 
 % & Comment sont-ils apparus ?
 % - bitkeeper, git
 % - cvs, svn
 
-\section{Etude de GIT}
-
-\subsection{Choix de GIT}
-
-\subsection{Utilisation de GIT}
-
-\subsection{Détails sur le fonctionnement de GIT}
-
 \section*{Conclusion}
 
+Cette étude nous a permis d'explorer l'origine des gestionnaires de versions ainsi que de comprendre les différences entre les solutions proposées. Elle nous a conforté dans le choix de GIT, qui est un outil décentralisé, robuste et flexible. 
 
 
 %%% Local Variables: 
