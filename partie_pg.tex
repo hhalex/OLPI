@@ -85,7 +85,7 @@ Aujourd'hui, Subversion est un système de gestion de sources très répandu, ma
 
 BitKeeper est un gestionnaire de versions propriétaire qui permettait une utilisation gratuite. Il a été utilisé dans le cadre du développement du projet Linux. 
 
-En avril 2005, suite à un conflit sur l'extension de BitKeeper, pour préserver l'honneur du logiciel libre, Linus Torvalds décida de se séparer du monde du logiciel propriétaire. Linus est un spécialiste des systèmes de fichiers à l'université de Helsinki. Il produisit alors GIT en 2 semaines, ex nihilo. 
+En avril 2005, suite à un conflit sur l'extension de BitKeeper, pour préserver l'honneur du logiciel libre, Linus Torvalds décida de se séparer du monde du logiciel propriétaire. Linus est un spécialiste des systèmes de fichiers à l'université de Helsinki. Il produisit alors GIT en 2 semaines, ex nihilo. \cite{Article-git} 
 
 \subsubsection{Git et Mercurial}
 Si le modèle de Subversion se prête bien aux projets de taille raisonnable, conduits par une équipe organisée dont les responsabilités sont pré-établies, il trouve rapidement ses limites dans le cas de grands projets open-source conduits par des milliers de contributeurs potentiels :
@@ -133,12 +133,13 @@ Les concepts de base reposent sur les notions suivantes:
 \item Le commit : il s'agit d'une mise à jour élémentaire. La notion de granularité permet de qualifier la fréquence des mises à jour. Il est recommandé de faire un commit à l'ajout d'une fonctionnalité, même si elle concerne plusieurs fichiers. 
 \end{itemize}
 
-Le fonctionnement d'un gestionnaire de versions repose sur le calcul des différences entre les fichiers. 
+Le fonctionnement d'un gestionnaire de versions repose sur le calcul des différences entre les fichiers. Pour vérifier qu'un fichier a été modifié, GIT calcule le hash-code SHA-1 des fichiers. Cette clé sera très différente en cas de petites modifications. La probabilité qu'elle ne change pas augmente avec le nombre de modifications. 
 
 % fonctions, décrites de façon haut niveau
 
 %\subsection{Approche fonctionnelle}
 
+\subsection{Vocabulaire}
 
 \begin{figure}[!h]
 \centering
@@ -147,12 +148,242 @@ Le fonctionnement d'un gestionnaire de versions repose sur le calcul des différ
 \label{fonction}
 \end{figure}
 
-% \section{Récapitulatif/Comparatif des gestionnaires de versions}
+\section{Aperçu des gestionnaires de versions existants}
 
 % idée : quels sont les différents gestionnaires de versions ? Qu'est-ce qui les différencie ? 
 % & Comment sont-ils apparus ?
 % - bitkeeper, git
 % - cvs, svn
+
+\subsection{CVS, centralisé}
+
+CVS est l'un des plus anciens gestionnaires de versions. De ce fait, il n'est plus trop mis souvent à jour. Il est le moins puissant. 
+
+\subsection{SVN, centralisé}
+
+Avec GIT, il s'agit du gestionnaire de versions le plus utilisé. Il est simple d'utilisation et présente une interface graphique. 
+
+\subsection{Mercurial, décentralisé}
+
+Créé en même temps que GIT. 
+
+\subsection{Bazaar, décentralisé}
+
+Sur le même concept, il s'agit d'un outil conçu pour le projet Ubuntu et MySQL. 
+
+\subsection{GIT, décentralisé}
+
+Le meilleur, pour la fin, GIT est un outil récent, complet et puissant. Il est d'exécution rapide comparé à ses concurrents. Il est utilisé pour de multiples projets à ce jour. 
+
+\subsection{Gestionnaires propriétaires}
+
+Il existe des gestionnaires propriétaires, que nous nous contenterons de citer, car hors du cadre du logiciel libre. 
+\begin{itemize}
+\item BitKeeper
+\item Perforce
+\item Microsoft Visual SourceSafe
+\end{itemize}
+
+\section{Utilisation de GIT}
+Cette partie a été réalisée à l'aide du livre Pro Git \cite{ProGit}. 
+
+%@book{ProGit,
+%author = {Scott Chacon},
+%title = {Pro Git},
+%date = {2008},
+%}
+%@ OPTurl = {http://git-scm.com/book/fr}, 
+\subsection{Utilité}
+\label{sec:utilite}
+
+\par Pour un projet logiciel, la coopération de plusieurs personnes sur des fichiers communs est nécessaire, l'utilisation d'un gestionnaire de version s'impose. 
+\par Il s'agit de pouvoir gérer les interventions simultanées de plusieurs opérateurs sur un même fichier et d'enregistrer progressivement les modifications apportées, tout en pouvant revenir dessus si nécessaire. Ce type de système est massivement utilisé aujourd'hui, pour les projets conséquents, ou impliquant la coopération de plusieurs personnes.
+\par Github.com met à disposition une plateforme permettant d'héberger facilement des projets versionnés avec Git, c'est ce site que nous utiliserons.
+
+\par Nous allons détailler les opérations à utiliser pour l'utilisation de Git en ligne de commande. 
+
+\subsection{Création d'un projet}
+\label{sec:creation-dun-projet}
+
+\par Nous pouvons créer le projet avec les fonctionnalités intégrées de Github, mais en général, pour initialiser un projet git, on se place dans le répertoire du projet, à sa racine, puis on tape dans le terminal :
+\begin{verbatim}
+> git init
+\end{verbatim}
+
+\par Dans le cas d'un projet existant, on note l'adresse à laquelle le projet est disponible, par exemple \texttt{https://github.com/hhalex/PLS14}, et on tape dans le terminal:
+\begin{verbatim}
+> git clone https://github.com/hhalex/PLS14
+\end{verbatim}
+
+\par On verra normalement apparaître un dossier \texttt{.git} auquel il ne faudra surtout pas toucher puisqu'il s'agit des versions enregistrées par Git.
+
+\subsection{Enregistrement des modifications}
+\label{sec:enreg-des-modif}
+
+\par En travaillant sur le projet, on peut enregistrer régulièrement les modifications localement. On effectue ainsi des points de sauvegarde, qu'on peut nommer explicitement afin de pouvoir s'y retrouver plus tard.
+\par Après avoir apporté quelques modifications, placez-vous dans le répertoire du projet, à la racine, puis tapez :
+\begin{verbatim}
+> git status
+\end{verbatim}
+\par Cette commande va afficher tout d'abord les fichiers nouveaux/modifiés qui sont sélectionnés pour l'enregistrement, puis les fichiers nouveaux/modifiés non sélectionnés. 
+
+\begin{verbatim}
+Alex > 
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   CompteRendu/page_garde.tex
+#	modified:   CompteRendu/partie1.tex
+#	modified:   CompteRendu/partie2.tex
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	CompteRendu/.#partie2.tex
+#	CompteRendu/CompteRendu.aux
+#	CompteRendu/CompteRendu.idx
+#	CompteRendu/CompteRendu.log
+#	CompteRendu/CompteRendu.pdf
+#	CompteRendu/CompteRendu.synctex.gz
+#	CompteRendu/CompteRendu.toc
+#	CompteRendu/auto/
+#	CompteRendu/page_garde.aux
+#	CompteRendu/partie1.aux
+#	CompteRendu/partie2.aux
+#	CompteRendu/partie3.aux
+#	CompteRendu/partie4.aux
+#	CompteRendu/partie5.aux
+#	CompteRendu/styles.aux
+no changes added to commit (use "git add" and/or "git commit -a")
+\end{verbatim}
+
+\par Dans l'exemple précédent, aucun fichier n'est sélectionné pour le prochain enregistrement, appelé \emph{commit} dans le jargon de Git. On voit néanmoins apparaître 3 fichiers modifiés : \texttt{page\_garde.tex}, \texttt{partie1.tex}, \texttt{partie2.tex} encore non ajoutés à la liste des fichiers pour le prochain commit. Toute une série de fichiers divers apparaissent comme \emph{untracked}, dans notre cas il ne s'agit que de fichiers temporaires utiles pour la compilation du présent document. 
+
+\par Pour sélectionner les fichiers à ajouter au prochain enregistrement, tapez :
+\begin{verbatim}
+> git add fichier 
+\end{verbatim}
+
+\par On peut aller plus vite en donnant le nom du \texttt{dossier} pour ajouter tous les fichiers contenus dans \texttt{dossier}. Par exemple, si on avait voulu enregistrer tous les fichiers temporaires générés par la compilation du compte rendu, on aurait pu taper :
+\begin{verbatim}
+> git add CompteRendu
+\end{verbatim}
+
+\par Maintenant que les fichiers intéressants ont été sélectionnés, on peut procéder à l'étape d'enregistrement. Toujours au même endroit dans le dossier du projet, tapez :
+\begin{verbatim}
+> git commit -m "description du commit"
+\end{verbatim}
+
+\par Par exemple :
+\begin{verbatim}
+ > git commit -m "[CompteRendu] Modification de la page de garde"
+[master afe15b1] [CompteRendu] Modification de la page de garde
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+\end{verbatim}
+
+\par Vous pouvez maintenant vérifier que votre commit est bien là en tapant :
+\begin{verbatim}
+> git log
+\end{verbatim}
+
+\par Dans notre exemple :
+
+\begin{verbatim}
+> git log
+commit afe15b1adda058c10e066d0c01b40ec950eb2911
+Author: alexandre <alexandre.careil@supelec.fr>
+Date:   Sun Feb 16 16:31:51 2014 +0100
+
+    [CompteRendu] Modification de la page de garde
+
+commit 4f1aa9118121e69652afc65548b2efc2445ff699
+Author: alexandre <alexandre.careil@supelec.fr>
+Date:   Sun Feb 16 16:31:24 2014 +0100
+
+    [git] modification du .gitignore
+
+commit 0f548ee172c523eaaa6c51e9db113096470fba3f
+Author: ThiDiff <juanmanuel.munozperez@gmail.com>
+Date:   Thu Feb 13 10:18:38 2014 +0100
+
+    [GUI] Ajout de la classe Fenetre
+\end{verbatim}
+
+
+\par Cette commande affiche la liste des commits effectués sur le projet. Vous pouvez vous apercevoir que certains commits ne sont pas de vous.
+
+\subsection{Synchronisation avec le projet de référence}
+\label{sec:synchr-avec-le}
+
+\par Une fois toutes vos modifications effectuées et bien enregistrées comme indiqué dans le paragraphe précédent, il faut les rendre accessibles à toutes les autres personnes qui travaillent également sur le projet. Il faut d'abord commencer par récupérer les éventuelles modifications qui auraient pu être ajoutées pendant votre travail. Pour cela on crée une branche \texttt{pull} sur laquelle on récupère le projet distant, puis on le fusionne avec votre version.
+
+\par On crée la branche \texttt{pull}
+\begin{verbatim}
+> git checkout -b pull
+\end{verbatim}
+
+\par On récupère la dernière version du projet :
+\begin{verbatim}
+> git pull adresse_du_projet master
+\end{verbatim}
+
+\par Dans notre cas :
+\begin{verbatim}
+> git pull https://github.com/hhalex/PLS14 master
+\end{verbatim}
+
+\par Une fois fait, on retourne sur la branche \texttt{master} (la branche de base) et on fusionne le contenu de \texttt{pull} :
+
+\begin{verbatim}
+> git checkout master
+> git merge pull
+\end{verbatim}
+
+\par Dans notre exemple :
+
+\begin{verbatim}
+Alex > git pull https://github.com/hhalex/PLS14 master
+From https://github.com/hhalex/PLS14
+ * branch            master     -> FETCH_HEAD
+Already up-to-date.
+Alex > git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 2 commits.
+  (use "git push" to publish your local commits)
+Alex > git merge pull
+Already up-to-date.
+\end{verbatim}
+
+\par Maintenant que votre branche \texttt{master} est fin prête, on peut l'envoyer sur le projet distant. Pour cela, tapez :
+
+\begin{verbatim}
+> git push https://github.com/hhalex/PLS14 master
+\end{verbatim}
+
+\par Dans notre exemple :
+\begin{verbatim}
+ > git push https://github.com/hhalex/PLS14 master
+Username for 'https://github.com': hhalex
+Password for 'https://hhalex@github.com': ****
+
+Counting objects: 10, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 975 bytes | 0 bytes/s, done.
+Total 7 (delta 4), reused 0 (delta 0)
+To https://github.com/hhalex/PLS14
+   0f548ee..afe15b1  master -> master
+\end{verbatim}
+
+\subsection{Nettoyage des branches}
+\label{sec:nett-des-branch}
+
+\par Maintenant que l'étape de synchronisation est effectuée, la branche \texttt{pull} n'est plus nécessaire, vous pouvez donc la supprimer :
+\begin{verbatim}
+> git branch -d pull
+\end{verbatim}
 
 \section*{Conclusion}
 
