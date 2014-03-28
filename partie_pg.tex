@@ -81,6 +81,12 @@ C'est précisément pour combler ces lacunes qu'est né en 2000 le projet Subver
 
 Aujourd'hui, Subversion est un système de gestion de sources très répandu, mature et intégré à de nombreux outils. En activant le module correspondant, AtikTeam inclut un dépôt Subversion dans le projet, permettant ainsi d'intégrer parfaitement gestion de sources et gestion de projet.
 
+\subsubsection{BitKeeper}
+
+BitKeeper est un gestionnaire de versions propriétaire qui permettait une utilisation gratuite. Il a été utilisé dans le cadre du développement du projet Linux. 
+
+En avril 2005, suite à un conflit sur l'extension de BitKeeper, pour préserver l'honneur du logiciel libre, Linus Torvalds décida de se séparer du monde du logiciel propriétaire. Linus est un spécialiste des systèmes de fichiers à l'université de Helsinki. Il produisit alors GIT en 2 semaines, ex nihilo. 
+
 \subsubsection{Git et Mercurial}
 Si le modèle de Subversion se prête bien aux projets de taille raisonnable, conduits par une équipe organisée dont les responsabilités sont pré-établies, il trouve rapidement ses limites dans le cas de grands projets open-source conduits par des milliers de contributeurs potentiels :
 \begin{itemize}
@@ -105,22 +111,43 @@ Rien de spectaculaire à première vue, pourtant le changement de modèle est ra
 
 % On récapitule toutes les fonctionnalités clés : branches, commit, merge, stage, repo, centralisé, décentralisé, diff
 
-%\subsection{Approche globale}
+Pour cette partie, nous nous référerons au polycopié donné dans la bibliographie \cite{Git-poly}. 
+
+\subsection{Fonctionnalités}
+
+Les fonctionnalités de base sont les suivantes:
+\begin{itemize}
+\item Retracer l'historique des modifications d'un fichier avec leur auteur et leur date
+\item Revenir à une ancienne version de fichier
+\item Permettre à plusieurs utilisateurs de modifier un fichier
+\item Synchroniser les fichiers de tous les utilisateurs
+\begin{itemize}
+\item Le système de fichiers de base peut être commun à tous les utilisateurs (système décentralisé)
+\item ou distant (centralisé)
+\end{itemize}
+\end{itemize}
+
+Les concepts de base reposent sur les notions suivantes:
+\begin{itemize}
+\item La branche : il s'agit d'une version parallèle du projet. Le gestionnaire de versions permet de travailler de manière autonome sur la branche, et de fusionner les branches. Ceci permet par exemple de différencier les versions dans le processus de déploiement d'un logiciel. 
+\item Le commit : il s'agit d'une mise à jour élémentaire. La notion de granularité permet de qualifier la fréquence des mises à jour. Il est recommandé de faire un commit à l'ajout d'une fonctionnalité, même si elle concerne plusieurs fichiers. 
+\end{itemize}
+
+Le fonctionnement d'un gestionnaire de versions repose sur le calcul des différences entre les fichiers. 
 
 % fonctions, décrites de façon haut niveau
 
 %\subsection{Approche fonctionnelle}
 
-Pour cette partie, nous nous référerons au polycopié donné dans la bibliographie \cite{Git-poly}. 
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.6]{images/technique_git.png}
-\caption{Fonctionnalités d'un gestionnaire de versions}
+\caption{Principe de fonctionnement d'un gestionnaire de versions}
 \label{fonction}
 \end{figure}
 
-\section{Récapitulatif/Comparatif des gestionnaires de versions}
+% \section{Récapitulatif/Comparatif des gestionnaires de versions}
 
 % idée : quels sont les différents gestionnaires de versions ? Qu'est-ce qui les différencie ? 
 % & Comment sont-ils apparus ?
